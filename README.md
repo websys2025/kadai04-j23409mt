@@ -1,7 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/q1RWxQjY)
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=19535591&assignment_repo_type=AssignmentRepo)
 ## 第4講目の演習課題
-すみません。課題を出す場所が分からなかったのでここに書きます。課題を出す場所が違う為減点対象にしてもかまわないので課題を見てください。
+すみません。課題を出す場所が分からなかったのでここに書きます。
 ### 課題4-1．以下の要件を満たすように kadai4.html を修正せよ。
 * 商品用クラス「Item」を完成させて、期待される出力例がコンソールに表示されることを確認せよ。
 * 「課題４－１,
@@ -277,6 +277,97 @@
 * 所持金の変数を用意して、商品購入の度にその金額が財布から引かれるように修正せよ。
 * 所持金が不足している場合は、商品を購入できないように修正せよ。
 * 所持金をページに表示し、購入時に「○○を購入しました。残金は～～円です。」と表示されるよう修正せよ。
+* 課題４－５、
+* <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>演習課題4：自動販売機（クラス）</title>
+</head>
+<body>
+    <h1 id="vending-machine">自動販売機システム</h1>
+    <div id="wallet">所持金: <span id="balance">1000</span>円</div>
+    <table id="item_area" border="1"></table>
+    <script>
+        // 商品一覧を記録する連想配列の配列
+        const items =  [
+            { id: 1, name: "緑茶", price: 140, stock: 5 },
+            { id: 2, name: "水", price: 100, stock: 14 },
+            { id: 3, name: "オレンジジュース", price: 150, stock: 7 },
+            { id: 4, name: "リンゴジュース", price: 150, stock: 9 },
+            { id: 5, name: "炭酸水", price: 120, stock: 1 },
+            { id: 6, name: "サイダー", price: 160, stock: 3 },
+            { id: 7, name: "コーヒー", price: 170, stock: 8 },
+            { id: 8, name: "紅茶", price: 140, stock: 6 }
+        ];
+
+        // 所持金の初期値
+        let balance = 1000;
+
+        // 商品用のクラス定義
+        class Item {
+            static number = 1;
+            constructor(name, price, stock) {
+                this.id = Item.number;
+                this.name = name;
+                this.price = price;
+                this.stock = stock;
+                Item.number++;
+            }
+
+            // 商品一覧の表示関数
+            static showItemList(list) {
+                console.log("商品は以下の" + Item.number + "種類です。");
+                list.forEach(item => {
+                    console.log(`商品番号: ${item.id}, 商品名: ${item.name}, 金額: ${item.price}, 在庫数: ${item.stock}`);
+                });
+                console.log(""); // 空行の出力
+            }
+            
+            // 商品購入の関数
+            buyItem() {          
+                if (this.stock >= 1) { 
+                    if (balance >= this.price) {
+                        console.log("商品番号: " + this.id + ", 商品名: " + this.name + "を購入します。");
+                        balance -= this.price; // 所持金から金額を引く
+                        this.stock--; // 在庫数を減少
+                        console.log(`残金は${balance}円です。`);
+                        document.getElementById("balance").innerText = balance; // ページの所持金を更新
+                    } else {
+                        console.log("所持金が不足しています。");
+                    }
+                } else {
+                    console.log(this.name + "は商品の在庫がないため購入できません。");
+                }
+            }
+        } // End of Item class
+
+        // 商品テーブルのエレメント抽出
+        const itemArea = document.getElementById("item_area");
+        itemArea.innerHTML += "<tr><th>商品名</th><th>金額</th><th>在庫数</th><th>購入</th></tr>";
+
+        // 商品オブジェクトの生成
+        const item_list = items.map(item => new Item(item.name, item.price, item.stock));
+
+        // 商品表の作成
+        item_list.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${item.name}</td><td>${item.price}円</td><td>${item.stock}個</td><td><button id="button${item.id}">購入</button></td>`;
+            itemArea.appendChild(row);
+        });
+
+        // クリックイベント時の購入処理の設定
+        item_list.forEach(item => {
+            document.getElementById(`button${item.id}`).onclick = () => {
+                item.buyItem();
+            };
+        });
+
+        Item.showItemList(item_list);
+
+    </script>
+</body>
+</html>
 
 ### 課題提出方法
 * 随時、作業内容をコミットして、自分の課題リポジトリに履歴を残すこと。
