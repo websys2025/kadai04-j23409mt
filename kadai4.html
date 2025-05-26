@@ -37,6 +37,7 @@
 
                     // 配列の内容を項目毎に出力
                     // 課題4-1. ここにコードを書く
+                    items.forEach(item => {console.log("商品番号:"+" "+item.id+",", "商品名:"+" "+item.name+",", "金額:"+" "+item.price+",", "在庫数:"+" "+item.stock);}); 
                     console.log(""); // 空行の出力
                 }
                 
@@ -62,18 +63,36 @@
             const btn = new Array(items.length);
 
             // 課題4-1. ここにコード書く
+            for (let i = 0; i < items.length; i++) {item_list[i] = new Item(items[i].name, items[i].price, items[i].stock);
+            }
             // 商品オブジェクトの生成
 
             // 課題4-2. ここにコードを書く
+            for (let i = 0; i < item_list.length; i++) {
+                const row = document.createElement("tr");
+                const nameCell = document.createElement("td");
+                nameCell.textContent = item_list[i].name;
+                row.appendChild(nameCell);
+                const priceCell = document.createElement("td");
+                priceCell.textContent = item_list[i].price + "円";
+                row.appendChild(priceCell);
+                const stockCell = document.createElement("td");
+                stockCell.id = "stock" + item_list[i].id;
+                stockCell.textContent = item_list[i].stock;
+                row.appendChild(stockCell);
+                const buttonCell = document.createElement("td");
+                const buyButton = document.createElement("button");
+                buyButton.textContent = "購入";
+                buyButton.id = "button" + item_list[i].id;
+                buttonCell.appendChild(buyButton);
+                row.appendChild(buttonCell);
+                itemArea.appendChild(row);
             // 商品表の作成
 
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
-                // 課題4-1, 4-2のコードが完成したら、以下のコメントを外す
-                //document.getElementById("button"+item_list[i].id).onclick = () => {
-                //    item_list[i].buyItem();
-                //}
+               
             }
             Item.showItemList(item_list);
 
