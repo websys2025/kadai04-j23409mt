@@ -92,6 +92,12 @@
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
+                this.stock--; 
+                        const stockElement = document.getElementById("stock" + this.id);
+                        if (stockElement) {
+                            stockElement.textContent = this.stock;  
+                        }
+                        console.log("残りは" + this.stock + "個です。");
                
             }
             Item.showItemList(item_list);
