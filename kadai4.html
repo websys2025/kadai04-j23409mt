@@ -46,9 +46,34 @@
                     if (this.stock >= 1) { 
                         console.log("商品番号: "+this.id+", 商品名: "+this.name+"を購入します。");
                         // 課題4-2. ここにコードを書く
+                        for (let i = 0; i < item_list.length; i++) {
+                const row = document.createElement("tr");
+                const nameCell = document.createElement("td");
+                nameCell.textContent = item_list[i].name;
+                row.appendChild(nameCell);
+                const priceCell = document.createElement("td");
+                priceCell.textContent = item_list[i].price + "円";
+                row.appendChild(priceCell);
+                const stockCell = document.createElement("td");
+                stockCell.id = "stock" + item_list[i].id;
+                stockCell.textContent = item_list[i].stock;
+                row.appendChild(stockCell);
+                const buttonCell = document.createElement("td");
+                const buyButton = document.createElement("button");
+                buyButton.textContent = "購入";
+                buyButton.id = "button" + item_list[i].id;
+                buttonCell.appendChild(buyButton);
+                row.appendChild(buttonCell);
+                itemArea.appendChild(row);
                         // 購入による商品の在庫削減処理
                         
                         // 課題4-3. ここにコードを書く
+                            this.stock--; 
+                        const stockElement = document.getElementById("stock" + this.id);
+                        if (stockElement) {
+                            stockElement.textContent = this.stock;  
+                        }
+                        console.log("残りは" + this.stock + "個です。");
                         // 在庫用のエレメントを抽出し、HTML内の個数を更新
                     } else console.log(this.name+"は商品の在庫がないため購入できません。");
                 }
