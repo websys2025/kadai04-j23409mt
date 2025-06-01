@@ -37,44 +37,25 @@
 
                     // 配列の内容を項目毎に出力
                     // 課題4-1. ここにコードを書く
-                    items.forEach(item => {console.log("商品番号:"+" "+item.id+",", "商品名:"+" "+item.name+",", "金額:"+" "+item.price+",", "在庫数:"+" "+item.stock);}); 
+                    for(let i=0;i<list.length;i++){
+                        console.log("商品番号： "+list[i].id+",商品名： "+list[i].name+",金額： "+list[i].price+",在庫数： "+list[i].stock);
+                    }
                     console.log(""); // 空行の出力
                 }
-                
+               
                 // 商品購入の関数
                 buyItem() {          
-                    if (this.stock >= 1) { 
+                    if (this.stock >= 1) {
                         console.log("商品番号: "+this.id+", 商品名: "+this.name+"を購入します。");
                         // 課題4-2. ここにコードを書く
-                        for (let i = 0; i < item_list.length; i++) {
-                const row = document.createElement("tr");
-                const nameCell = document.createElement("td");
-                nameCell.textContent = item_list[i].name;
-                row.appendChild(nameCell);
-                const priceCell = document.createElement("td");
-                priceCell.textContent = item_list[i].price + "円";
-                row.appendChild(priceCell);
-                const stockCell = document.createElement("td");
-                stockCell.id = "stock" + item_list[i].id;
-                stockCell.textContent = item_list[i].stock;
-                row.appendChild(stockCell);
-                const buttonCell = document.createElement("td");
-                const buyButton = document.createElement("button");
-                buyButton.textContent = "購入";
-                buyButton.id = "button" + item_list[i].id;
-                buttonCell.appendChild(buyButton);
-                row.appendChild(buttonCell);
-                itemArea.appendChild(row);
                         // 購入による商品の在庫削減処理
-                        
+                        this.stock--;
+                        console.log("残りは"+this.stock+"個です。");
+
                         // 課題4-3. ここにコードを書く
-                            this.stock--; 
-                        const stockElement = document.getElementById("stock" + this.id);
-                        if (stockElement) {
-                            stockElement.textContent = this.stock;  
-                        }
-                        console.log("残りは" + this.stock + "個です。");
                         // 在庫用のエレメントを抽出し、HTML内の個数を更新
+                        btn[this.id-1].textContent = this.stock;
+
                     } else console.log(this.name+"は商品の在庫がないため購入できません。");
                 }
             } // End of Item class
@@ -88,41 +69,27 @@
             const btn = new Array(items.length);
 
             // 課題4-1. ここにコード書く
-            for (let i = 0; i < items.length; i++) {item_list[i] = new Item(items[i].name, items[i].price, items[i].stock);
-            }
             // 商品オブジェクトの生成
+            for(let i=0;i<items.length;i++){
+                item_list[i] = new Item(items[i].name,items[i].price,items[i].stock);
+                console.log("id: "+item_list[i].id +",name: "+item_list[i].name +", "+item_list[i].price+"円"+", 残り"+item_list[i].stock+"個");
+            }            
 
             // 課題4-2. ここにコードを書く
-            for (let i = 0; i < item_list.length; i++) {
-                const row = document.createElement("tr");
-                const nameCell = document.createElement("td");
-                nameCell.textContent = item_list[i].name;
-                row.appendChild(nameCell);
-                const priceCell = document.createElement("td");
-                priceCell.textContent = item_list[i].price + "円";
-                row.appendChild(priceCell);
-                const stockCell = document.createElement("td");
-                stockCell.id = "stock" + item_list[i].id;
-                stockCell.textContent = item_list[i].stock;
-                row.appendChild(stockCell);
-                const buttonCell = document.createElement("td");
-                const buyButton = document.createElement("button");
-                buyButton.textContent = "購入";
-                buyButton.id = "button" + item_list[i].id;
-                buttonCell.appendChild(buyButton);
-                row.appendChild(buttonCell);
-                itemArea.appendChild(row);
             // 商品表の作成
+            const itemTable = document.getElementById("item_area");
+            for(let i=0;i<items.length;i++){
+                itemTable.innerHTML += "<tr><th>"+item_list[i].name+"</th>"+"<th>"+item_list[i].price+"</th>"+"<th id=\"stock"+ item_list[i].id+"\">"+item_list[i].stock+"</th>"+"<th><button id=\"button"+ item_list[i].id +"\">購入</button></th></tr>";
+            }
 
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
-                this.stock--; 
-                        const stockElement = document.getElementById("stock" + this.id);
-                        if (stockElement) {
-                            stockElement.textContent = this.stock;  
-                        }
-                        console.log("残りは" + this.stock + "個です。");
+                btn[i] = document.getElementById("stock"+item_list[i].id);
+                // 課題4-1, 4-2のコードが完成したら、以下のコメントを外す
+                document.getElementById("button"+item_list[i].id).onclick = () => {
+                    item_list[i].buyItem();
+                }
                
             }
             Item.showItemList(item_list);
@@ -130,7 +97,7 @@
         </script>
     </body>
 </html>
-<!-- 
+<!--
 期待される出力例
 -----------------
 id: 1, name: 緑茶, 140円, 残り5個
